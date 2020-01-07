@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>MarsRover.js</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./src/rover.css">
+</head>
+
+<body>
+    <div class="container mt-3">
+        <div style="text-align: center">
+            <h1>MarsRover.js</h1>
+        </div>
+    </div>
+    <hr class="col-10">
+    <div class="container col-12 row">
+        <div class="container col-3 text-center">
+            <div class="container col-12">
+                <div class="form-group">
+                    <div class="form-group row">
+                        <label class="col-5 mt-2" for="mapX">Map X:</label>
+                        <input type="text" class="form-control col-6" id="mapX" placeholder="5">
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-5 mt-2" for="mapY">Map Y:</label>
+                        <input type="text" class="form-control col-6" id="mapY" placeholder="5">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-sm btn-info btn-block">Move</button>
+                    <button class="btn btn-sm btn-info btn-block">Left</button>
+                    <button class="btn btn-sm btn-info btn-block">Right</button>
+                </div>
+                <div class="form-group">
+                    <button onclick="test()" class="btn btn-danger btn-block">Start</button>
+                </div>
+            </div>
+        </div>
+        <div class="container col-8">
+            <div class="map">
+                <div class="parent">
+                    <div class="div1"> </div>
+                    <div class="div2"> </div>
+                    <div class="div3"> </div>
+                    <div class="div4"> </div>
+                    <div class="div5"> </div>
+                    <div class="div6"> </div>
+                    <div class="div7"> </div>
+                    <div class="div8"> </div>
+                    <div class="div9"> </div>
+                    <div class="div10"> </div>
+                    <div class="div11"> </div>
+                    <div class="div12"> </div>
+                    <div class="div13"> </div>
+                    <div class="div14"> </div>
+                    <div class="div15"> </div>
+                    <div class="div16"> </div>
+                    <div class="div17"> </div>
+                    <div class="div18"> </div>
+                    <div class="div19"> </div>
+                    <div class="div20"> </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="footer mt-5 py-3" style="background: #eee;bottom: 0; position: fixed; width: 100%;">
+        <div class="container">
+            <div class="row">
+                <a class="col-md-6 text-muted" href="https://github.com/firatozz/MarsRover.js" target="_blank">Mars
+                    Rover</a>
+                <br>
+                <a class="col-md-6 text-muted text-right" href="https://github.com/firatozz/"
+                    target="_blank">github.com/firatozz ©
+                    2020</a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+
+<script type="text/javascript" src="./src/rover.js"></script>
+<script>
+    function test() {
+        var rover = new marsRover()
+        rover.setCommand({
+            map: [5, 5]
+        });
+    }
+</script>
+
+</html>
