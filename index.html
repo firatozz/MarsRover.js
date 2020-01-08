@@ -13,34 +13,47 @@
 <body>
     <div class="container mt-3">
         <div style="text-align: center">
-            <h1>MarsRover.js</h1>
+            <h2>MarsRover.js</h2>
+            <hr>
         </div>
     </div>
-    <hr class="col-10">
-    <div class="container col-12 row">
-        <div class="container col-3 text-center">
+    <div class="col-12 row">
+        <div class="col-3">
+            <h5 class="text-left">Inputs:</h5>
+            <hr>
             <div class="container col-12">
                 <div class="form-group">
                     <div class="form-group row">
-                        <label class="col-5 mt-2" for="mapX">Map X:</label>
+                        <label class="col-5 mt-2 pl-0" for="mapX">Map X:</label>
                         <input type="text" class="form-control col-6" id="mapX" placeholder="5">
                     </div>
                     <div class="form-group row">
-                        <label class="col-5 mt-2" for="mapY">Map Y:</label>
+                        <label class="col-5 mt-2 pl-0" for="mapY">Map Y:</label>
                         <input type="text" class="form-control col-6" id="mapY" placeholder="5">
                     </div>
                 </div>
                 <div class="form-group">
-                    <button class="btn btn-sm btn-info btn-block">Move</button>
-                    <button class="btn btn-sm btn-info btn-block">Left</button>
-                    <button class="btn btn-sm btn-info btn-block">Right</button>
+                    <button id="btnMove" class="btn btn-sm btn-info m-1 pl-3 pr-3"
+                        onclick="enteranceMove()">MOVE</button>
+                    <button id="btnLeft" class="btn btn-sm btn-info m-1 pl-3 pr-3"
+                        onclick="enteranceLeft()">LEFT</button>
+                    <button id="btnRight" class="btn btn-sm btn-info m-1 pl-3 pr-3"
+                        onclick="enteranceRight()">RIGHT</button>
                 </div>
                 <div class="form-group">
                     <button onclick="test()" class="btn btn-danger btn-block">Start</button>
                 </div>
             </div>
+            <div class="container col-12">
+                <div class="form-group">
+                    <label class="col-12 text-left mt-2 pl-0" for="routePath">Route:</label>
+                    <input type="text" class="form-control col-12" id="routePath" disabled>
+                </div>
+            </div>
         </div>
-        <div class="container col-8">
+        <div class="container col-6">
+            <h5>Map:</h5>
+            <hr>
             <div class="map">
                 <div class="parent">
                     <div class="div1"> </div>
@@ -65,6 +78,11 @@
                     <div class="div20"> </div>
                 </div>
             </div>
+        </div>
+        <div class="container col-3">
+            <h5>Log:</h5>
+            <hr>
+            <div class="logs"><label id="roverLogs" for=""></label></div>
         </div>
     </div>
     <footer class="footer mt-5 py-3" style="background: #eee;bottom: 0; position: fixed; width: 100%;">

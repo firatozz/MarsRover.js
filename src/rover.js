@@ -2,23 +2,11 @@ function marsRover(commands) {
     this.positionY = 0;
     this.positionX = 0;
     this.direction = "N";
+    this.route = null;
     this.mapX = 5;
     this.mapY = 5;
     this.travelPath = [];
 }
-
-
-marsRover.prototype.marsMap = function () {
-    mapSizeX = this.mapX;
-    mapSizeY = this.mapY;
-    console.log(mapSizeX + " " + mapSizeY);
-}
-
-marsRover.prototype.roverTurn = function () {
-    //if L => roverTurnLeft(this.direction);
-    // if R => roverTurnRight(this.direction);
-}
-
 
 
 //Funtion Left
@@ -101,22 +89,25 @@ marsRover.prototype.roverMove = function () {
     console.log("Rover is here: " + [this.positionX, this.positionY]);
 }
 
-marsRover.prototype.commandsRover = function (rover) {
-    var route = prompt("Insert the commands to move the Rover: f: forward, r: right, l: left");
 
-    if (route.indexOf('f') >= 0 || route.indexOf('r') >= 0 || route.indexOf('l') >= 0) {
-        var newRoute = route.split("");
-        console.log("Rover's route: " + route);
+marsRover.prototype.commandsRover = function (rover) {
+
+    var inputVal = document.getElementById("routePath").value;
+    this.route = inputVal;
+
+    if (this.route.indexOf('M') >= 0 || this.route.indexOf('R') >= 0 || this.route.indexOf('L') >= 0) {
+        var newRoute = this.route.split("");
+        console.log("Rover's route: " + this.route);
         for (var i = 0; i < newRoute.length; i++) {
 
-            switch (route[i]) {
-                case 'l':
+            switch (this.route[i]) {
+                case 'L':
                     this.roverTurnLeft(rover);
                     break;
-                case 'r':
+                case 'R':
                     this.roverTurnRight(rover);
                     break;
-                case 'f':
+                case 'M':
                     this.roverMove(rover);
                     break;
             }
@@ -127,22 +118,35 @@ marsRover.prototype.commandsRover = function (rover) {
             console.log("Rover's route Log: " + this.travelPath[i]);
             console.log("Rover's current direction: " + this.direction);
 
+            var roverLogs = document.getElementById("roverLogs");
+            roverLogs.innerHTML += "Step " + [i+1] + ": <br>" +
+                "Rover's current location: " + position + "<br>" + "Rover's current direction: " + this.direction + "<br> --------- <br>";
         } //End of Forloop
 
     } else {
         alert("Enter a valid command!!");
-        commandsRover(rover1); //prompt poup-up again if input doesnt match.
+        commandsRover(rover); //prompt poup-up again if input doesnt match.
     } //ifelse
 }
+
+
+enteranceMove = () => {
+    document.getElementById("routePath").value += "M";
+}
+
+enteranceLeft = () => {
+    document.getElementById("routePath").value += "L";
+}
+
+enteranceRight = () => {
+    document.getElementById("routePath").value += "R";
+}
+
 
 
 marsRover.prototype.setCommand = function (commands) {
     for (var i = 0; i < Object.keys(commands).length; i++) {
         this[Object.keys(commands)[i]] = commands[Object.keys(commands)[i]];
     }
-    this.marsMap();
-    // this.roverMove(this.direction);
-    // this.roverTurnLeft(this.direction);
-    // this.roverTurnRight(this.direction);
     this.commandsRover();
 }
