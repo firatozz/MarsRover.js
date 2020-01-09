@@ -8,7 +8,7 @@ function marsRover(commands) {
     this.route = null;
     this.mapGrid = null;
     this.mapGridX = document.getElementById("mapGrid").value.split(".")[0];
-    this.mapGridY = document.getElementById("mapGrid").value.split(".")[1];;
+    this.mapGridY = document.getElementById("mapGrid").value.split(".")[1];
     this.travelPath = [];
     this.limitGridAlert = false;
     this.roverLogs;
@@ -82,6 +82,7 @@ marsRover.prototype.roverMove = function () {
                 this.limitGridAlert = true;
             } else {
                 this.positionY++;
+                console.log(this.mapGridY);
             }
             break;
 
@@ -109,6 +110,7 @@ marsRover.prototype.roverMove = function () {
             }
             break;
     }
+
 
     //console.log("Mars Rover move forward.");
     //console.log("Rover is here: " + [this.positionX, this.positionY]);
@@ -172,7 +174,6 @@ enteranceLeft = () => {
 enteranceRight = () => {
     document.getElementById("routePath").value += "R";
 }
-
 
 
 marsRover.prototype.setCommand = function (commands) {

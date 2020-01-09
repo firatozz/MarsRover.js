@@ -37,7 +37,7 @@
                         onclick="enteranceRight()">RIGHT</button>
                 </div>
                 <div class="form-group">
-                    <button onclick="test()" class="btn btn-danger btn-block">Start</button>
+                    <button id="startTest" onclick="test()" class="btn btn-danger btn-block">Start</button>
                 </div>
                 <div class="container col-12">
                     <div class="form-group">
@@ -58,7 +58,7 @@
                 <input type="number" min="2" class="form-control col-4" id="mapGrid" placeholder="E.g. : 5,5">
                 <button class="col-4 btn btn-info btn-block ml-3" onclick="createMap()">Set Map Grids</button>
             </div>
-            
+
             <div class="map">
                 <div class="parent"></div>
             </div>
@@ -87,13 +87,13 @@
 <script type="text/javascript" src="./src/rover.js"></script>
 <script>
     function test() {
-        var rover = new marsRover()
+        var rover = new marsRover();
         rover.setCommand({
             map: [5, 5]
         });
     }
 
-    function createMap(){
+    function createMap() {
         var rover = new marsRover();
         rover.createMap();
     }
