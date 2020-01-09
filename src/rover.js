@@ -2,10 +2,13 @@ function marsRover(commands) {
     this.positionY = 0;
     this.positionX = 0;
     this.direction = "N";
+    this.currentPos = null;
     this.route = null;
     this.mapX = 5;
     this.mapY = 5;
     this.travelPath = [];
+    this.limitGridAlert = false;
+    this.roverLogs;
 }
 
 
@@ -51,46 +54,47 @@ marsRover.prototype.roverTurnRight = function () {
 }
 
 marsRover.prototype.roverMove = function () {
+
     switch (this.direction) {
         case 'N':
             if (this.positionY < 0 || this.positionY > this.mapY) {
-                console.log("Rover reached limit grid");
+                this.limitGridAlert = true;
             } else {
-                this.positionY += 1;
+                this.positionY++;
             }
             break;
 
         case 'E':
             if (this.positionX < 0 || this.positionX > this.mapX) {
-                console.log("Rover reached limit grid");
+                this.limitGridAlert = true;
             } else {
-                this.positionX += 1;
+                this.positionX++;
             }
             break;
 
         case 'S':
-            if (this.positionY < 0 || this.positionY > this.mapY) {
-                console.log("Rover reached limit grid");
+            if (this.positionY <= 0 || this.positionY > this.mapY) {
+                this.limitGridAlert = true;
             } else {
-                this.positionY -= 1;
+                this.positionY--;
             }
             break;
 
         case 'W':
-            if (this.positionX < 0 || this.positionX > this.mapX) {
-                console.log("Rover reached limit grid");
+            if (this.positionX <= 0 || this.positionX > this.mapX) {
+                this.limitGridAlert = true;
             } else {
-                this.positionX += 1;
+                this.positionX--;
             }
             break;
     }
 
-    console.log("Mars Rover move forward.");
-    console.log("Rover is here: " + [this.positionX, this.positionY]);
+    //console.log("Mars Rover move forward.");
+    //console.log("Rover is here: " + [this.positionX, this.positionY]);
 }
 
 
-marsRover.prototype.commandsRover = function (rover) {
+marsRover.prototype.commandsRover = function () {
 
     var inputVal = document.getElementById("routePath").value;
     this.route = inputVal;
@@ -102,30 +106,36 @@ marsRover.prototype.commandsRover = function (rover) {
 
             switch (this.route[i]) {
                 case 'L':
-                    this.roverTurnLeft(rover);
+                    this.roverTurnLeft();
                     break;
                 case 'R':
-                    this.roverTurnRight(rover);
+                    this.roverTurnRight();
                     break;
                 case 'M':
-                    this.roverMove(rover);
+                    this.roverMove();
                     break;
             }
 
             var position = [this.positionX, this.positionY];
             this.travelPath.push(position);
-            console.log("Rover's current location: " + position);
-            console.log("Rover's route Log: " + this.travelPath[i]);
-            console.log("Rover's current direction: " + this.direction);
+            // console.log("Rover's current location: " + position);
+            // console.log("Rover's route Log: " + this.travelPath[i]);
+            // console.log("Rover's current direction: " + this.direction);
 
-            var roverLogs = document.getElementById("roverLogs");
-            roverLogs.innerHTML += "Step " + [i+1] + ": <br>" +
-                "Rover's current location: " + position + "<br>" + "Rover's current direction: " + this.direction + "<br> --------- <br>";
+            this.roverLogs = document.getElementById("roverLogs");
+            if (this.limitGridAlert) {
+                this.roverLogs.innerHTML = "ERROR: Rover reached limit grid";
+                break;
+            } else {
+                this.roverLogs.innerHTML += "Step " + [i + 1] + ": <br>" +
+                    "Rover's current location: " + position + "<br>" + "Rover's current direction: " + this.direction + "<br> --------- <br>";
+            }
+
         } //End of Forloop
 
     } else {
         alert("Enter a valid command!!");
-        commandsRover(rover); //prompt poup-up again if input doesnt match.
+        commandsRover(); //prompt poup-up again if input doesnt match.
     } //ifelse
 }
 
