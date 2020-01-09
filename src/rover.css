@@ -33,9 +33,9 @@
   background: #000;
 }
 
-.parent img{
-  position:absolute;
-  bottom:-50px;
-  left:-50px;
+.parent img {
+  position: absolute;
+  bottom: -50px;
+  left: -50px;
   transition: 1s ease-out;
 }
