@@ -1,14 +1,35 @@
 function marsRover(commands) {
     this.positionY = 0;
     this.positionX = 0;
+    this.currPosX = 1;
+    this.currPosY = 3;
     this.direction = "N";
     this.currentPos = null;
     this.route = null;
-    this.mapX = 5;
-    this.mapY = 5;
+    this.mapGrid = null;
+    this.mapGridX = document.getElementById("mapGrid").value.split(".")[0];
+    this.mapGridY = document.getElementById("mapGrid").value.split(".")[1];;
     this.travelPath = [];
     this.limitGridAlert = false;
     this.roverLogs;
+}
+
+marsRover.prototype.createMap = function () {
+    if (!(document.getElementById("mapGrid").value.split(".").length > 1)) {
+        alert("Invalid Grid Value  E.g.: 5,6");
+    } else {
+        document.querySelector(".parent").setAttribute("style", "grid-template-columns: repeat(" + parseInt(this.mapGridX) + ", 100px);grid-template-rows: repeat(" + parseInt(this.mapGridY) + ", 100px);");
+        this.mapGrid = parseInt((this.mapGridX) * parseInt(this.mapGridY));
+        for (var i = 1; i <= this.mapGrid; i++) {
+            mapGrid[i] = document.createElement("div");
+            mapGrid[i].className = "div" + i;
+            document.querySelector(".parent").appendChild(mapGrid[i]);
+        }
+        if (document.getElementById("mapGrid").addEventListener("focus", () => {
+                document.querySelector(".parent").innerHTML = "";
+                document.getElementById("mapGrid").value = "";
+            }));
+    }
 }
 
 
@@ -57,7 +78,7 @@ marsRover.prototype.roverMove = function () {
 
     switch (this.direction) {
         case 'N':
-            if (this.positionY < 0 || this.positionY > this.mapY) {
+            if (this.positionY < 0 || this.positionY > this.mapGridY) {
                 this.limitGridAlert = true;
             } else {
                 this.positionY++;
@@ -65,7 +86,7 @@ marsRover.prototype.roverMove = function () {
             break;
 
         case 'E':
-            if (this.positionX < 0 || this.positionX > this.mapX) {
+            if (this.positionX < 0 || this.positionX > this.mapGridX) {
                 this.limitGridAlert = true;
             } else {
                 this.positionX++;
@@ -73,7 +94,7 @@ marsRover.prototype.roverMove = function () {
             break;
 
         case 'S':
-            if (this.positionY <= 0 || this.positionY > this.mapY) {
+            if (this.positionY <= 0 || this.positionY > this.mapGridY) {
                 this.limitGridAlert = true;
             } else {
                 this.positionY--;
@@ -81,7 +102,7 @@ marsRover.prototype.roverMove = function () {
             break;
 
         case 'W':
-            if (this.positionX <= 0 || this.positionX > this.mapX) {
+            if (this.positionX <= 0 || this.positionX > this.mapGridX) {
                 this.limitGridAlert = true;
             } else {
                 this.positionX--;
