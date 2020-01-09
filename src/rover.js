@@ -12,13 +12,14 @@ function marsRover(commands) {
     this.travelPath = [];
     this.limitGridAlert = false;
     this.roverLogs;
+    this.degree = 0;
 }
 
 marsRover.prototype.createMap = function () {
     if (!(document.getElementById("mapGrid").value.split(".").length > 1)) {
         alert("Invalid Grid Value  E.g.: 5,6");
     } else {
-        document.querySelector(".parent").setAttribute("style", "grid-template-columns: repeat(" + parseInt(this.mapGridX) + ", 100px);grid-template-rows: repeat(" + parseInt(this.mapGridY) + ", 100px);");
+        document.querySelector(".parent").setAttribute("style", "grid-template-columns: repeat(" + parseInt(this.mapGridX) + ", " + 960 / parseInt(this.mapGridX) + "px);grid-template-rows: repeat(" + parseInt(this.mapGridY) + ", " + 960 / parseInt(this.mapGridY) + "px);");
         this.mapGrid = parseInt((this.mapGridX) * parseInt(this.mapGridY));
         for (var i = 1; i <= this.mapGrid; i++) {
             mapGrid[i] = document.createElement("div");
@@ -34,7 +35,15 @@ marsRover.prototype.createMap = function () {
 
 
 //Funtion Left
-marsRover.prototype.roverTurnLeft = function () {
+marsRover.prototype.roverTurnLeft = function (delay) {
+    console.log('Deg:' + this.degree);
+    this.degree -= 90;
+    console.log('Deg:' + this.degree);
+    var rover = document.getElementById('rover');
+    var deg = this.degree;
+    setTimeout(function () {
+        rover.style.transform = "rotate(" + deg + "deg)";
+    }, delay * 1000);
     switch (this.direction) {
 
         case 'N':
@@ -55,7 +64,14 @@ marsRover.prototype.roverTurnLeft = function () {
 
 
 //Function Right
-marsRover.prototype.roverTurnRight = function () {
+marsRover.prototype.roverTurnRight = function (delay) {
+    this.degree += 90;
+    console.log('Deg:' + this.degree);
+    var deg = this.degree;
+    var rover = document.getElementById('rover');
+    setTimeout(function () {
+        rover.style.transform = "rotate(" + deg + "deg)";
+    }, delay * 1000);
     switch (this.direction) {
 
         case 'N':
@@ -74,7 +90,9 @@ marsRover.prototype.roverTurnRight = function () {
     console.log("roverTurnRight was called!" + " " + this.direction);
 }
 
-marsRover.prototype.roverMove = function () {
+marsRover.prototype.roverMove = function (delay) {
+
+    var rover = document.getElementById('rover');
 
     switch (this.direction) {
         case 'N':
@@ -111,7 +129,13 @@ marsRover.prototype.roverMove = function () {
             break;
     }
 
-
+    var posx = this.positionX;
+    var posy = this.positionY;
+    setTimeout(function () {
+        console.log('--');
+        rover.style.bottom = posy * 100 - 50 + "px";
+        rover.style.left = posx * 100 - 50 + "px";
+    }, delay * 1000);
     //console.log("Mars Rover move forward.");
     //console.log("Rover is here: " + [this.positionX, this.positionY]);
 }
@@ -181,4 +205,12 @@ marsRover.prototype.setCommand = function (commands) {
         this[Object.keys(commands)[i]] = commands[Object.keys(commands)[i]];
     }
     this.commandsRover();
+}
+
+marsRover.prototype.routeHandler = function (i, route) {
+    console.log('1' + route);
+    console.log('2' + this.route);
+    this.route = route;
+    setTimeout(function () {}, 1000);
+
 }

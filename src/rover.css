@@ -1,7 +1,7 @@
 .logs {
   display: block;
   overflow: auto;
-  height: 400px;
+  height: 300px;
   border: 1px solid;
   border-radius: 5px;
   padding: 15px;
@@ -17,13 +17,25 @@
 
 .parent {
   display: grid;
-  grid-template-columns: repeat(5, 100px);
-  grid-template-rows: repeat(4, 100px);
+  grid-template-columns: repeat(5, 150px);
+  grid-template-rows: repeat(4, 150px);
   grid-column-gap: 0px;
   grid-row-gap: 0px;
   height: 100vh;
+  transform: rotate3d(30, -15, -10, -70deg);
+  position: absolute;
+  top: -15%;
+  right: 15%;
 }
 
 .parent > div {
-  border: 1px solid;
+  border: 1px solid #43d143;
+  background: #000;
+}
+
+.parent img{
+  position:absolute;
+  bottom:-50px;
+  left:-50px;
+  transition: 1s ease-out;
 }
