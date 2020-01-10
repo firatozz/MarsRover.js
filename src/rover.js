@@ -4,7 +4,7 @@ function marsRover(commands) {
     this.currPosX = 1;
     this.currPosY = 3;
     this.direction = "N";
-    this.currentPos = null;
+    this.startPos = document.getElementById("startPos").value.split(",");
     this.route = null;
     this.mapGrid = null;
     this.mapGridX = document.getElementById("mapGrid").value.split(".")[0];
@@ -20,30 +20,41 @@ function marsRover(commands) {
 }
 
 marsRover.prototype.createMap = function () {
-
-    if (!(document.getElementById("mapGrid").value.split(".").length > 1)) {
-        alert("Invalid Grid Value  E.g.: 5,6");
+    
+    if (!(document.getElementById("mapGrid").value.split(".").length > 1) || this.mapGridX != this.mapGridY) {
+        alert("Invalid Grid Value  E.g.: 5,5");
     } else {
-        var rover = document.getElementById('rover');
-        if (rover) {
-            var posx = this.positionX;
-            var posy = this.positionY;
-            rover.style.bottom = (posy + 0.5) * (500 / parseInt(this.mapGridY)) - this.roverHeight / 2 + "px";
-            rover.style.left = (posx + 0.5) * (500 / parseInt(this.mapGridX)) - this.roverWidth / 2 + "px";
+        let cells = [];
+        for (let i = this.mapGridX - 1; i >= 0; i--) {
+            for (let j = 0; j < this.mapGridX; j++) {
+                cells.push(j + "-" + i);
+            }
         }
+
         document.querySelector(".parent").setAttribute("style", "grid-template-columns: repeat(" + parseInt(this.mapGridX) + ", " + 500 / parseInt(this.mapGridX) + "px);grid-template-rows: repeat(" + parseInt(this.mapGridY) + ", " + 500 / parseInt(this.mapGridY) + "px);");
         this.mapGrid = parseInt(this.mapGridX) * parseInt(this.mapGridY);
         for (var i = 1; i <= this.mapGrid; i++) {
             mapGrid[i] = document.createElement("div");
-            mapGrid[i].className = "div" + i;
+            mapGrid[i].className = "div" + [i];
+            mapGrid[i].innerHTML = "<span>(" + cells[i - 1] + ")</span>";
             document.querySelector(".parent").appendChild(mapGrid[i]);
         }
+
         if (document.getElementById("mapGrid").addEventListener("focus", () => {
                 document.querySelector(".parent").innerHTML = "";
                 document.getElementById("mapGrid").value = "";
             }));
+        var rover = document.getElementById('rover');
+        if (rover) {
+            var posx = this.positionX;
+            var posy = this.positionY;
+            rover.style.opacity = "1";
+            rover.style.bottom = (posy + 0.5) * (500 / parseInt(this.mapGridY)) - this.roverHeight / 2 + "px";
+            rover.style.left = (posx + 0.5) * (500 / parseInt(this.mapGridX)) - this.roverWidth / 2 + "px";
+        }
     }
 }
+
 
 
 //Funtion Left
@@ -77,13 +88,14 @@ marsRover.prototype.roverTurnLeft = function (delay) {
 
 //Function Right
 marsRover.prototype.roverTurnRight = function (delay) {
+
     this.degree += 90;
-    console.log('Deg:' + this.degree);
     var deg = this.degree;
     var rover = document.getElementById('rover');
     setTimeout(function () {
         rover.style.transform = "rotate(" + deg + "deg)";
     }, delay * 1000);
+
     switch (this.direction) {
 
         case 'N':
@@ -145,8 +157,6 @@ marsRover.prototype.roverMove = function (delay) {
     var posx = this.positionX;
     var posy = this.positionY;
     setTimeout(() => {
-        console.log((500 / parseInt(this.mapGridY)));
-        console.log((500 / parseInt(this.mapGridX)));
         rover.style.bottom = (posy + 0.5) * (500 / parseInt(this.mapGridY)) - this.roverHeight / 2 + "px";
         rover.style.left = (posx + 0.5) * (500 / parseInt(this.mapGridX)) - this.roverWidth / 2 + "px";
     }, delay * 1000);
@@ -156,6 +166,10 @@ marsRover.prototype.roverMove = function (delay) {
 
 
 marsRover.prototype.commandsRover = function () {
+
+    if(document.getElementById("startPos").value.split(",").length == 3){
+        
+    }
 
     var inputVal = document.getElementById("routePath").value;
     this.route = inputVal;
@@ -185,7 +199,7 @@ marsRover.prototype.commandsRover = function () {
 
             this.roverLogs = document.getElementById("roverLogs");
             if (this.limitGridAlert) {
-                this.roverLogs.innerHTML = "ERROR: Rover reached limit grid";
+                this.roverLogs.innerHTML = "<div class='error'>ERROR: Rover reached limit grid. Can not move beyond the boundaries of Mars</div>";
                 break;
             } else {
                 this.roverLogs.innerHTML += "Step " + [i + 1] + ": <br>" +
