@@ -1,10 +1,11 @@
 function marsRover(commands) {
     this.positionY = 0;
     this.positionX = 0;
-    this.currPosX = 1;
-    this.currPosY = 3;
+    this.startPosX = document.getElementById("startPos").value.split(",")[0];
+    this.startPosY = document.getElementById("startPos").value.split(",")[1];
+    this.startDirection = document.getElementById("startPos").value.split(",")[3];
     this.direction = "N";
-    this.startPos = document.getElementById("startPos").value.split(",");
+    this.startPos = "00N";
     this.route = null;
     this.mapGrid = null;
     this.mapGridX = document.getElementById("mapGrid").value.split(".")[0];
@@ -20,7 +21,7 @@ function marsRover(commands) {
 }
 
 marsRover.prototype.createMap = function () {
-    
+
     if (!(document.getElementById("mapGrid").value.split(".").length > 1) || this.mapGridX != this.mapGridY) {
         alert("Invalid Grid Value  E.g.: 5,5");
     } else {
@@ -33,7 +34,7 @@ marsRover.prototype.createMap = function () {
 
         document.querySelector(".parent").setAttribute("style", "grid-template-columns: repeat(" + parseInt(this.mapGridX) + ", " + 500 / parseInt(this.mapGridX) + "px);grid-template-rows: repeat(" + parseInt(this.mapGridY) + ", " + 500 / parseInt(this.mapGridY) + "px);");
         this.mapGrid = parseInt(this.mapGridX) * parseInt(this.mapGridY);
-        for (var i = 1; i <= this.mapGrid; i++) {
+        for (let i = 1; i <= this.mapGrid; i++) {
             mapGrid[i] = document.createElement("div");
             mapGrid[i].className = "div" + [i];
             mapGrid[i].innerHTML = "<span>(" + cells[i - 1] + ")</span>";
@@ -44,10 +45,10 @@ marsRover.prototype.createMap = function () {
                 document.querySelector(".parent").innerHTML = "";
                 document.getElementById("mapGrid").value = "";
             }));
-        var rover = document.getElementById('rover');
+        let rover = document.getElementById('rover');
         if (rover) {
-            var posx = this.positionX;
-            var posy = this.positionY;
+            let posx = this.positionX;
+            let posy = this.positionY;
             rover.style.opacity = "1";
             rover.style.bottom = (posy + 0.5) * (500 / parseInt(this.mapGridY)) - this.roverHeight / 2 + "px";
             rover.style.left = (posx + 0.5) * (500 / parseInt(this.mapGridX)) - this.roverWidth / 2 + "px";
@@ -59,14 +60,14 @@ marsRover.prototype.createMap = function () {
 
 //Funtion Left
 marsRover.prototype.roverTurnLeft = function (delay) {
-    console.log('Deg:' + this.degree);
+
     this.degree -= 90;
-    console.log('Deg:' + this.degree);
     var rover = document.getElementById('rover');
     var deg = this.degree;
     setTimeout(function () {
         rover.style.transform = "rotate(" + deg + "deg)";
     }, delay * 1000);
+
     switch (this.direction) {
 
         case 'N':
@@ -166,55 +167,56 @@ marsRover.prototype.roverMove = function (delay) {
 
 
 marsRover.prototype.commandsRover = function () {
+    if (document.querySelector(".parent > div")) {
 
-    let re = new RegExp('^[0-4][0-4][NEWS]$');
-    var myArray = re.exec(document.getElementById("startPos").value.split(","));
+        let str = document.getElementById("startPos").value.split(",");
+        let patt = new RegExp("^[0-4][0-4][NEWS]");
+        let res = patt.test(str);
 
-    if(document.getElementById("startPos").value.split(",").length == 3){
-        
-    }
+        if (res) {
 
-    var inputVal = document.getElementById("routePath").value;
-    this.route = inputVal;
+            var inputVal = document.getElementById("routePath").value;
+            this.route = inputVal;
 
-    if (this.route.indexOf('M') >= 0 || this.route.indexOf('R') >= 0 || this.route.indexOf('L') >= 0) {
-        var newRoute = this.route.split("");
-        console.log("Rover's route: " + this.route);
-        for (var i = 0; i < newRoute.length; i++) {
+            if (this.route.indexOf('M') >= 0 || this.route.indexOf('R') >= 0 || this.route.indexOf('L') >= 0) {
+                var newRoute = this.route.split("");
+                console.log("Rover's route: " + this.route);
+                for (var i = 0; i < newRoute.length; i++) {
 
-            switch (this.route[i]) {
-                case 'L':
-                    this.roverTurnLeft(i);
-                    break;
-                case 'R':
-                    this.roverTurnRight(i);
-                    break;
-                case 'M':
-                    this.roverMove(i);
-                    break;
-            }
+                    switch (this.route[i]) {
+                        case 'L':
+                            this.roverTurnLeft(i);
+                            break;
+                        case 'R':
+                            this.roverTurnRight(i);
+                            break;
+                        case 'M':
+                            this.roverMove(i);
+                            break;
+                    }
 
-            var position = [this.positionX, this.positionY];
-            this.travelPath.push(position);
-            // console.log("Rover's current location: " + position);
-            // console.log("Rover's route Log: " + this.travelPath[i]);
-            // console.log("Rover's current direction: " + this.direction);
+                    var position = [this.positionX, this.positionY];
+                    this.travelPath.push(position);
+                    this.roverLogs = document.getElementById("roverLogs");
+                    if (this.limitGridAlert) {
+                        this.roverLogs.innerHTML = "<div class='error'>ERROR: Rover reached limit grid. Can not move beyond the boundaries of Mars</div>";
+                        break;
+                    } else {
+                        this.roverLogs.innerHTML += "Step " + [i + 1] + ": <br>" +
+                            "Rover's current location: " + position + "<br>" + "Rover's current direction: " + this.direction + "<br> --------- <br>";
+                    }
 
-            this.roverLogs = document.getElementById("roverLogs");
-            if (this.limitGridAlert) {
-                this.roverLogs.innerHTML = "<div class='error'>ERROR: Rover reached limit grid. Can not move beyond the boundaries of Mars</div>";
-                break;
+                } //End of Forloop
             } else {
-                this.roverLogs.innerHTML += "Step " + [i + 1] + ": <br>" +
-                    "Rover's current location: " + position + "<br>" + "Rover's current direction: " + this.direction + "<br> --------- <br>";
+                alert("Enter a valid command!!");
+                commandsRover(); //prompt poup-up again if input doesnt match.
             }
-
-        } //End of Forloop
-
+        } else {
+            alert("Enter a valid Start Position. E.g.: 1,3,N. This's mean X: 1, Y: 3, Direction: North");
+        }
     } else {
-        alert("Enter a valid command!!");
-        commandsRover(); //prompt poup-up again if input doesnt match.
-    } //ifelse
+        alert("Firstly create Mars map grid.");
+    }
 }
 
 

@@ -70,11 +70,3 @@
     transform: scale(1);
   }
 }
-
-#startPos{
-  text-transform: uppercase;
-}
-
-.col-12 {
-  height: 100vh !important;
-}
