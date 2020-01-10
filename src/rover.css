@@ -21,11 +21,11 @@
   grid-template-rows: repeat(4, 150px);
   grid-column-gap: 0px;
   grid-row-gap: 0px;
-  
+
   position: relative;
 }
 
-.parent > div {
+.parent>div {
   border: 1px solid #000;
 }
 
@@ -37,6 +37,6 @@
   left: 0;
 }
 
-.col-12{
+.col-12 {
   height: 100vh !important;
 }
