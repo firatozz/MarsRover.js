@@ -167,6 +167,9 @@ marsRover.prototype.roverMove = function (delay) {
 
 marsRover.prototype.commandsRover = function () {
 
+    let re = new RegExp('^[0-4][0-4][NEWS]$');
+    var myArray = re.exec(document.getElementById("startPos").value.split(","));
+
     if(document.getElementById("startPos").value.split(",").length == 3){
         
     }
