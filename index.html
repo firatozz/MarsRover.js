@@ -21,7 +21,7 @@
         <div class="col-3">
             <h5 class="text-left">Inputs:</h5>
             <hr>
-            <div class="container col-12 table-bordered" style="border-radius: 6px;">
+            <div class="container table-bordered" style="border-radius: 6px;">
                 <div class="form-group">
                     <div class="form-group row">
                         <label class="col-5 mt-3" for="currentPos">Current Position:</label>
@@ -39,20 +39,15 @@
                 <div class="form-group">
                     <button id="startTest" onclick="test()" class="btn btn-danger btn-block">Start</button>
                 </div>
-                <div class="container col-12">
+                <div class="container">
                     <div class="form-group">
-                        <label class="col-12 text-left mt-2 pl-0" for="routePath">Route:</label>
-                        <input type="text" class="form-control col-12" id="routePath" disabled>
+                        <label class="text-left mt-2 pl-0" for="routePath">Route:</label>
+                        <input type="text" class="form-control" id="routePath" disabled>
                     </div>
                 </div>
             </div>
-            <div class="container col-12 mt-2">
-                <h5>Log:</h5>
-                <hr>
-                <div class="logs"><label id="roverLogs" for=""></label></div>
-            </div>
         </div>
-        <div class="container col-9">
+        <div class="container col-6">
             <h5>Map:</h5>
             <hr>
             <div class="form-group row">
@@ -62,11 +57,16 @@
             </div>
 
             <div class="map">
-                <div class="parent"><img id="rover" src="./src/img/IMG_1118.jpg" alt="" width="200px"></div>
+                <div class="parent"><img id="rover" src="./src/img/Rover.png" alt="" width="200px"></div>
             </div>
         </div>
+        <div class="container col-3">
+            <h5>Logs:</h5>
+            <hr>
+            <div class="logs"><label id="roverLogs" for=""></label></div>
+        </div>
     </div>
-    <footer class="footer mt-5 py-3" style="background: #eee;bottom: 0; position: fixed; width: 100%;">
+    <!-- <footer class="footer mt-5 py-3" style="background: #eee;bottom: 0; position: fixed; width: 100%;">
         <div class="container">
             <div class="row">
                 <a class="col-md-6 text-muted" href="https://github.com/firatozz/MarsRover.js" target="_blank">Mars
@@ -77,7 +77,7 @@
                     2020</a>
             </div>
         </div>
-    </footer>
+    </footer> -->
 
 </body>
 

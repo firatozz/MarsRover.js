@@ -9,18 +9,30 @@ function marsRover(commands) {
     this.mapGrid = null;
     this.mapGridX = document.getElementById("mapGrid").value.split(".")[0];
     this.mapGridY = document.getElementById("mapGrid").value.split(".")[1];
+    this.mapGridX++;
+    this.mapGridY++;
     this.travelPath = [];
     this.limitGridAlert = false;
     this.roverLogs;
     this.degree = 0;
+    this.roverHeight = 55;
+    this.roverWidth = 50;
 }
 
 marsRover.prototype.createMap = function () {
+
     if (!(document.getElementById("mapGrid").value.split(".").length > 1)) {
         alert("Invalid Grid Value  E.g.: 5,6");
     } else {
-        document.querySelector(".parent").setAttribute("style", "grid-template-columns: repeat(" + parseInt(this.mapGridX) + ", " + 960 / parseInt(this.mapGridX) + "px);grid-template-rows: repeat(" + parseInt(this.mapGridY) + ", " + 960 / parseInt(this.mapGridY) + "px);");
-        this.mapGrid = parseInt((this.mapGridX) * parseInt(this.mapGridY));
+        var rover = document.getElementById('rover');
+        if (rover) {
+            var posx = this.positionX;
+            var posy = this.positionY;
+            rover.style.bottom = (posy + 0.5) * (500 / parseInt(this.mapGridY)) - this.roverHeight / 2 + "px";
+            rover.style.left = (posx + 0.5) * (500 / parseInt(this.mapGridX)) - this.roverWidth / 2 + "px";
+        }
+        document.querySelector(".parent").setAttribute("style", "grid-template-columns: repeat(" + parseInt(this.mapGridX) + ", " + 500 / parseInt(this.mapGridX) + "px);grid-template-rows: repeat(" + parseInt(this.mapGridY) + ", " + 500 / parseInt(this.mapGridY) + "px);");
+        this.mapGrid = parseInt(this.mapGridX) * parseInt(this.mapGridY);
         for (var i = 1; i <= this.mapGrid; i++) {
             mapGrid[i] = document.createElement("div");
             mapGrid[i].className = "div" + i;
@@ -96,7 +108,7 @@ marsRover.prototype.roverMove = function (delay) {
 
     switch (this.direction) {
         case 'N':
-            if (this.positionY < 0 || this.positionY > this.mapGridY) {
+            if (this.positionY < 0 || this.positionY >= parseInt(this.mapGridY - 1)) {
                 this.limitGridAlert = true;
             } else {
                 this.positionY++;
@@ -105,7 +117,7 @@ marsRover.prototype.roverMove = function (delay) {
             break;
 
         case 'E':
-            if (this.positionX < 0 || this.positionX > this.mapGridX) {
+            if (this.positionX < 0 || this.positionX >= parseInt(this.mapGridX - 1)) {
                 this.limitGridAlert = true;
             } else {
                 this.positionX++;
@@ -129,12 +141,14 @@ marsRover.prototype.roverMove = function (delay) {
             break;
     }
 
+
     var posx = this.positionX;
     var posy = this.positionY;
-    setTimeout(function () {
-        console.log('--');
-        rover.style.bottom = posy * 100 - 50 + "px";
-        rover.style.left = posx * 100 - 50 + "px";
+    setTimeout(() => {
+        console.log((500 / parseInt(this.mapGridY)));
+        console.log((500 / parseInt(this.mapGridX)));
+        rover.style.bottom = (posy + 0.5) * (500 / parseInt(this.mapGridY)) - this.roverHeight / 2 + "px";
+        rover.style.left = (posx + 0.5) * (500 / parseInt(this.mapGridX)) - this.roverWidth / 2 + "px";
     }, delay * 1000);
     //console.log("Mars Rover move forward.");
     //console.log("Rover is here: " + [this.positionX, this.positionY]);
@@ -153,13 +167,13 @@ marsRover.prototype.commandsRover = function () {
 
             switch (this.route[i]) {
                 case 'L':
-                    this.roverTurnLeft();
+                    this.roverTurnLeft(i);
                     break;
                 case 'R':
-                    this.roverTurnRight();
+                    this.roverTurnRight(i);
                     break;
                 case 'M':
-                    this.roverMove();
+                    this.roverMove(i);
                     break;
             }
 
