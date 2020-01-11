@@ -45,7 +45,7 @@
                         <label class="text-left mt-2 pl-0" for="routePath">Route:</label>
                         <div class="row">
                             <input type="text" class="form-control col-9" id="routePath" disabled>
-                            <button id="clearPath" onclick="clearPath()" class="btn btn-danger btn-block col-1 ml-2">X</button>
+                            <button id="clearPath" class="btn btn-danger btn-block col-1 ml-2">X</button>
                         </div>
                     </div>
                 </div>
@@ -56,7 +56,7 @@
             <hr>
             <div class="form-group row">
                 <label class="col-3 mt-2" for="mapGrid">Map Grid: </label>
-                <input type="number" min="2" class="form-control col-4" id="mapGrid" placeholder="E.g. : 5,5">
+                <input type="text" min="2" class="form-control col-4" id="mapGrid" placeholder="E.g. : 5,5">
                 <button id="btnSetMap" class="col-2 btn btn-info ml-3" onclick="createMap()">Set Map Grids</button>
                 <button id="btnClearMap" class="col-2 btn btn-danger ml-3">Clear Map</button>
             </div>

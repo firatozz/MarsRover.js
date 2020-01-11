@@ -1,29 +1,44 @@
 function marsRover(commands) {
+    this.degree = 0;
     this.startPosX = document.getElementById("startPos").value.split("")[0];
     this.startPosY = document.getElementById("startPos").value.split("")[1];
-    this.startDirection = document.getElementById("startPos").value.split("")[2];
     this.positionY = parseInt(this.startPosY);
     this.positionX = parseInt(this.startPosX);
     this.direction = document.getElementById("startPos").value.split("")[2];
     this.route = null;
     this.mapGrid = null;
-    this.mapGridX = document.getElementById("mapGrid").value.split(".")[0];
-    this.mapGridY = document.getElementById("mapGrid").value.split(".")[1];
+    this.mapGridX = document.getElementById("mapGrid").value.split(",")[0];
+    this.mapGridY = document.getElementById("mapGrid").value.split(",")[1];
     this.mapGridX++;
     this.mapGridY++;
     this.travelPath = [];
     this.limitGridAlert = false;
     this.roverLogs;
-    this.degree = 0;
+    switch (this.direction) {
+        case 'W':
+            this.degree = -90;
+            break;
+        case 'S':
+            this.degree = -180;
+            break;
+        case 'E':
+            this.degree = 90;
+            break;
+        default:
+            this.degree = 0;
+
+    }
     this.roverHeight = 55;
     this.roverWidth = 50;
 }
 
 //Function create map
 marsRover.prototype.createMap = function () {
-
-    if (!(document.getElementById("mapGrid").value.split(".").length > 1) || this.mapGridX != this.mapGridY || parseInt(this.mapGridX) > 9 || parseInt(this.mapGridY) > 9) {
+    var validDirections = ["N", "E", "S", "W"]
+    if (!(document.getElementById("mapGrid").value.split(",").length > 1) || this.mapGridX != this.mapGridY || parseInt(this.mapGridX) > 9 || parseInt(this.mapGridY) > 9) {
         alert("Invalid Grid Value  E.g.: 5,5 \nMax value = 9");
+    } else if (validDirections.indexOf(this.direction) < 0 || this.positionX >= this.mapGridX || this.positionY >= this.mapGridY || typeof this.positionX != "number" || typeof this.positionY != "number") {
+        alert("Invalid Initial Value  E.g.: 0 0 N \nMax value = Grid Values");
     } else {
         let cells = [];
         for (let i = this.mapGridX - 1; i >= 0; i--) {
@@ -46,13 +61,13 @@ marsRover.prototype.createMap = function () {
         }
 
         if (document.getElementById("btnClearMap").addEventListener("click", () => {
-                this.clearFunc();
+                this.clearMapFunc();
             }));
 
         if (document.getElementById("mapGrid").addEventListener("focus", () => {
-                this.clearFunc();
+                this.clearMapFunc();
             }));
-
+        let deg = this.degree;
         let rover = document.getElementById('rover');
         if (rover) {
             let posx = this.positionX;
@@ -60,18 +75,18 @@ marsRover.prototype.createMap = function () {
             rover.style.opacity = "1";
             rover.style.bottom = (posy + 0.5) * (500 / parseInt(this.mapGridY)) - this.roverHeight / 2 + "px";
             rover.style.left = (posx + 0.5) * (500 / parseInt(this.mapGridX)) - this.roverWidth / 2 + "px";
+            rover.style.transform = "rotate(" + deg + "deg)";
         }
 
     }
 }
 
 //Function clear map
-marsRover.prototype.clearFunc = function () {
+marsRover.prototype.clearMapFunc = function () {
     document.querySelector(".parent").innerHTML = "";
     document.getElementById("mapGrid").value = "";
     document.getElementById("btnSetMap").removeAttribute("disabled", "disabled");
 }
-
 
 
 //Funtion Left
@@ -128,7 +143,6 @@ marsRover.prototype.roverTurnRight = function (delay) {
             this.direction = 'N';
             break;
     }
-    console.log("roverTurnRight was called!" + " " + this.direction);
 }
 
 //Function rover move
@@ -178,8 +192,6 @@ marsRover.prototype.roverMove = function (delay) {
         rover.style.bottom = (posy + 0.5) * (500 / parseInt(this.mapGridY)) - this.roverHeight / 2 + "px";
         rover.style.left = (posx + 0.5) * (500 / parseInt(this.mapGridX)) - this.roverWidth / 2 + "px";
     }, delay * 1000);
-    //console.log("Mars Rover move forward.");
-    //console.log("Rover is here: " + [this.positionX, this.positionY]);
 }
 
 //Function commands
@@ -238,23 +250,28 @@ marsRover.prototype.commandsRover = function () {
 
 //Function add move to path
 enteranceMove = () => {
-    document.getElementById("routePath").value += "M";
+    if (document.querySelector(".parent > div"))
+        document.getElementById("routePath").value += "M";
 }
 
 //Function add turn left move to path
 enteranceLeft = () => {
-    document.getElementById("routePath").value += "L";
+    if (document.querySelector(".parent > div"))
+        document.getElementById("routePath").value += "L";
 }
 
 //Function add turn right to path
 enteranceRight = () => {
-    document.getElementById("routePath").value += "R";
+    if (document.querySelector(".parent > div"))
+        document.getElementById("routePath").value += "R";
 }
 
-clearPath = () => {
-    document.getElementById("clearPath").addEventListener("click", function(){
-        document.getElementById("routePath").value ="";
-    })
+
+marsRover.prototype.clearPath = function () {
+    document.getElementById("clearPath").addEventListener("click", () => {
+        document.getElementById("routePath").value = "";
+    });
+
 }
 
 
@@ -263,12 +280,5 @@ marsRover.prototype.setCommand = function (commands) {
         this[Object.keys(commands)[i]] = commands[Object.keys(commands)[i]];
     }
     this.commandsRover();
+    this.clearPath();
 }
-
-// marsRover.prototype.routeHandler = function (i, route) {
-//     console.log('1' + route);
-//     console.log('2' + this.route);
-//     this.route = route;
-//     setTimeout(function () {}, 1000);
-
-// }
