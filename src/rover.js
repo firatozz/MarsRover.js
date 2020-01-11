@@ -1,11 +1,10 @@
 function marsRover(commands) {
-    this.positionY = 0;
-    this.positionX = 0;
-    this.startPosX = document.getElementById("startPos").value.split(",")[0];
-    this.startPosY = document.getElementById("startPos").value.split(",")[1];
-    this.startDirection = document.getElementById("startPos").value.split(",")[3];
-    this.direction = "N";
-    this.startPos = "00N";
+    this.startPosX = document.getElementById("startPos").value.split("")[0];
+    this.startPosY = document.getElementById("startPos").value.split("")[1];
+    this.startDirection = document.getElementById("startPos").value.split("")[2];
+    this.positionY = parseInt(this.startPosY);
+    this.positionX = parseInt(this.startPosX);
+    this.direction = document.getElementById("startPos").value.split("")[2];
     this.route = null;
     this.mapGrid = null;
     this.mapGridX = document.getElementById("mapGrid").value.split(".")[0];
@@ -20,10 +19,11 @@ function marsRover(commands) {
     this.roverWidth = 50;
 }
 
+//Function create map
 marsRover.prototype.createMap = function () {
 
-    if (!(document.getElementById("mapGrid").value.split(".").length > 1) || this.mapGridX != this.mapGridY) {
-        alert("Invalid Grid Value  E.g.: 5,5");
+    if (!(document.getElementById("mapGrid").value.split(".").length > 1) || this.mapGridX != this.mapGridY || parseInt(this.mapGridX) > 9 || parseInt(this.mapGridY) > 9) {
+        alert("Invalid Grid Value  E.g.: 5,5 \nMax value = 9");
     } else {
         let cells = [];
         for (let i = this.mapGridX - 1; i >= 0; i--) {
@@ -41,10 +41,18 @@ marsRover.prototype.createMap = function () {
             document.querySelector(".parent").appendChild(mapGrid[i]);
         }
 
-        if (document.getElementById("mapGrid").addEventListener("focus", () => {
-                document.querySelector(".parent").innerHTML = "";
-                document.getElementById("mapGrid").value = "";
+        if (document.querySelector(".parent")) {
+            document.getElementById("btnSetMap").setAttribute("disabled", "disabled");
+        }
+
+        if (document.getElementById("btnClearMap").addEventListener("click", () => {
+                this.clearFunc();
             }));
+
+        if (document.getElementById("mapGrid").addEventListener("focus", () => {
+                this.clearFunc();
+            }));
+
         let rover = document.getElementById('rover');
         if (rover) {
             let posx = this.positionX;
@@ -53,7 +61,15 @@ marsRover.prototype.createMap = function () {
             rover.style.bottom = (posy + 0.5) * (500 / parseInt(this.mapGridY)) - this.roverHeight / 2 + "px";
             rover.style.left = (posx + 0.5) * (500 / parseInt(this.mapGridX)) - this.roverWidth / 2 + "px";
         }
+
     }
+}
+
+//Function clear map
+marsRover.prototype.clearFunc = function () {
+    document.querySelector(".parent").innerHTML = "";
+    document.getElementById("mapGrid").value = "";
+    document.getElementById("btnSetMap").removeAttribute("disabled", "disabled");
 }
 
 
@@ -115,6 +131,7 @@ marsRover.prototype.roverTurnRight = function (delay) {
     console.log("roverTurnRight was called!" + " " + this.direction);
 }
 
+//Function rover move
 marsRover.prototype.roverMove = function (delay) {
 
     var rover = document.getElementById('rover');
@@ -165,12 +182,12 @@ marsRover.prototype.roverMove = function (delay) {
     //console.log("Rover is here: " + [this.positionX, this.positionY]);
 }
 
-
+//Function commands
 marsRover.prototype.commandsRover = function () {
     if (document.querySelector(".parent > div")) {
 
-        let str = document.getElementById("startPos").value.split(",");
-        let patt = new RegExp("^[0-4][0-4][NEWS]");
+        let str = document.getElementById("startPos").value;
+        let patt = new RegExp('[0-9][0-9][NEWS]');
         let res = patt.test(str);
 
         if (res) {
@@ -212,24 +229,32 @@ marsRover.prototype.commandsRover = function () {
                 commandsRover(); //prompt poup-up again if input doesnt match.
             }
         } else {
-            alert("Enter a valid Start Position. E.g.: 1,3,N. This's mean X: 1, Y: 3, Direction: North");
+            alert("Enter a valid Start Position. E.g.: 1 3 N. This's mean X: 1, Y: 3, Direction: North.");
         }
     } else {
         alert("Firstly create Mars map grid.");
     }
 }
 
-
+//Function add move to path
 enteranceMove = () => {
     document.getElementById("routePath").value += "M";
 }
 
+//Function add turn left move to path
 enteranceLeft = () => {
     document.getElementById("routePath").value += "L";
 }
 
+//Function add turn right to path
 enteranceRight = () => {
     document.getElementById("routePath").value += "R";
+}
+
+clearPath = () => {
+    document.getElementById("clearPath").addEventListener("click", function(){
+        document.getElementById("routePath").value ="";
+    })
 }
 
 
@@ -240,10 +265,10 @@ marsRover.prototype.setCommand = function (commands) {
     this.commandsRover();
 }
 
-marsRover.prototype.routeHandler = function (i, route) {
-    console.log('1' + route);
-    console.log('2' + this.route);
-    this.route = route;
-    setTimeout(function () {}, 1000);
+// marsRover.prototype.routeHandler = function (i, route) {
+//     console.log('1' + route);
+//     console.log('2' + this.route);
+//     this.route = route;
+//     setTimeout(function () {}, 1000);
 
-}
+// }

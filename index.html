@@ -25,7 +25,8 @@
                 <div class="form-group">
                     <div class="form-group row">
                         <label class="col-5 mt-3" for="startPos">Start Position:</label>
-                        <input required type="text" class="form-control col-6 mt-2" id="startPos" placeholder="13N"  maxlength="3" pattern="^[0-10][0-10][NEWS]$">
+                        <input required type="text" class="form-control col-6 mt-2" id="startPos" placeholder="13N"
+                            value="00N" maxlength="3" pattern="[0-9][0-9][NEWS]">
                     </div>
                 </div>
                 <div class="form-group">
@@ -37,12 +38,15 @@
                         onclick="enteranceRight()">RIGHT</button>
                 </div>
                 <div class="form-group">
-                    <button id="startTest" onclick="test()" class="btn btn-danger btn-block">Start</button>
+                    <button id="startTest" onclick="test()" class="btn btn-info btn-block">Start</button>
                 </div>
                 <div class="container">
                     <div class="form-group">
                         <label class="text-left mt-2 pl-0" for="routePath">Route:</label>
-                        <input type="text" class="form-control" id="routePath" disabled>
+                        <div class="row">
+                            <input type="text" class="form-control col-9" id="routePath" disabled>
+                            <button id="clearPath" onclick="clearPath()" class="btn btn-danger btn-block col-1 ml-2">X</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -53,7 +57,8 @@
             <div class="form-group row">
                 <label class="col-3 mt-2" for="mapGrid">Map Grid: </label>
                 <input type="number" min="2" class="form-control col-4" id="mapGrid" placeholder="E.g. : 5,5">
-                <button class="col-4 btn btn-info btn-block ml-3" onclick="createMap()">Set Map Grids</button>
+                <button id="btnSetMap" class="col-2 btn btn-info ml-3" onclick="createMap()">Set Map Grids</button>
+                <button id="btnClearMap" class="col-2 btn btn-danger ml-3">Clear Map</button>
             </div>
 
             <div class="map">
